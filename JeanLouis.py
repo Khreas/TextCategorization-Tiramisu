@@ -1,23 +1,4 @@
-"""
-This tutorial introduces the multilayer perceptron using Theano.
-
- A multilayer perceptron is a logistic regressor where
-instead of feeding the input to the logistic regression you insert a
-intermediate layer, called the hidden layer, that has a nonlinear
-activation function (usually tanh or sigmoid) . One can use many such
-hidden layers making the architecture deep. The tutorial will also tackle
-the problem of MNIST digit classification.
-
-.. math::
-
-    f(x) = G( b^{(2)} + W^{(2)}( s( b^{(1)} + W^{(1)} x))),
-
-References:
-
-    - textbooks: "Pattern Recognition and Machine Learning" -
-                 Christopher M. Bishop, section 5
-
-"""
+# -*- coding: utf-8 -*-
 
 from __future__ import print_function
 
@@ -29,6 +10,8 @@ import sys
 import timeit
 
 import numpy
+
+import matplotlib.pyplot as plt
 
 import theano
 import theano.tensor as T
@@ -197,52 +180,41 @@ class MLP(object):
         # keep track of model input
         self.input = input
 
-
 def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
              dataset='mnist.pkl.gz', batch_size=20, n_hidden=500):
     """
     Demonstrate stochastic gradient descent optimization for a multilayer
     perceptron
-
     This is demonstrated on MNIST.
-
     :type learning_rate: float
     :param learning_rate: learning rate used (factor for the stochastic
     gradient
-
     :type L1_reg: float
     :param L1_reg: L1-norm's weight when added to the cost (see
     regularization)
-
     :type L2_reg: float
     :param L2_reg: L2-norm's weight when added to the cost (see
     regularization)
-
     :type n_epochs: int
     :param n_epochs: maximal number of epochs to run the optimizer
-
     :type dataset: string
     :param dataset: the path of the MNIST dataset file from
                  http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz
-
-
    """
-    datasets = load_data(dataset)
 
+    datasets = load_data(dataset)
     train_set_x, train_set_y = datasets[0]
-    valid_set_x, valid_set_y = datasets[1]
     test_set_x, test_set_y = datasets[2]
 
     # compute number of minibatches for training, validation and testing
     n_train_batches = train_set_x.get_value(borrow=True).shape[0] // batch_size
-    n_valid_batches = valid_set_x.get_value(borrow=True).shape[0] // batch_size
     n_test_batches = test_set_x.get_value(borrow=True).shape[0] // batch_size
 
     ######################
     # BUILD ACTUAL MODEL #
     ######################
-    print('... building the model')
-
+    sys.stdout.write('-> Building Model\n')
+    sys.stdout.flush()
     # allocate symbolic variables for the data
     index = T.lscalar()  # index to a [mini]batch
     x = T.matrix('x')  # the data is presented as rasterized images
@@ -282,15 +254,6 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
         }
     )
 
-    validate_model = theano.function(
-        inputs=[index],
-        outputs=classifier.errors(y),
-        givens={
-            x: valid_set_x[index * batch_size:(index + 1) * batch_size],
-            y: valid_set_y[index * batch_size:(index + 1) * batch_size]
-        }
-    )
-
     # start-snippet-5
     # compute the gradient of cost with respect to theta (sorted in params)
     # the resulting gradients will be stored in a list gparams
@@ -325,86 +288,83 @@ def test_mlp(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
     ###############
     # TRAIN MODEL #
     ###############
-    print('... training')
+    print('-> Training')
 
     # early-stopping parameters
     patience = 10000  # look as this many examples regardless
-    patience_increase = 2  # wait this much longer when a new best is
-                           # found
-    improvement_threshold = 0.995  # a relative improvement of this much is
-                                   # considered significant
-    validation_frequency = min(n_train_batches, patience // 2)
-                                  # go through this many
-                                  # minibatche before checking the network
-                                  # on the validation set; in this case we
-                                  # check every epoch
+    test_frequency = min(n_train_batches, patience // 2)
 
-    best_validation_loss = numpy.inf
-    best_iter = 0
     test_score = 0.
     start_time = timeit.default_timer()
 
     epoch = 0
+    test_losses_vec = []
     done_looping = False
 
     while (epoch < n_epochs) and (not done_looping):
         epoch = epoch + 1
         for minibatch_index in range(n_train_batches):
-
+            
+            printProgress(minibatch_index, n_train_batches, prefix='Minibatch progress -> ')
+            
             minibatch_avg_cost = train_model(minibatch_index)
-            # iteration number
+            
             iter = (epoch - 1) * n_train_batches + minibatch_index
 
-            if (iter + 1) % validation_frequency == 0:
-                # compute zero-one loss on validation set
-                validation_losses = [validate_model(i) for i
-                                     in range(n_valid_batches)]
-                this_validation_loss = numpy.mean(validation_losses)
+            if (iter + 1) % test_frequency == 0:
 
-                print(
-                    'epoch %i, minibatch %i/%i, validation error %f %%' %
-                    (
-                        epoch,
-                        minibatch_index + 1,
-                        n_train_batches,
-                        this_validation_loss * 100.
-                    )
-                )
+                    # The following doesn't train the model ; it is an intermediate operation used to analyze the evolution of the efficiency
+                    # of the network.
 
-                # if we got the best validation score until now
-                if this_validation_loss < best_validation_loss:
-                    #improve patience if loss improvement is good enough
-                    if (
-                        this_validation_loss < best_validation_loss *
-                        improvement_threshold
-                    ):
-                        patience = max(patience, iter * patience_increase)
-
-                    best_validation_loss = this_validation_loss
-                    best_iter = iter
-
-                    # test it on the test set
                     test_losses = [test_model(i) for i
                                    in range(n_test_batches)]
                     test_score = numpy.mean(test_losses)
 
-                    print(('     epoch %i, minibatch %i/%i, test error of '
-                           'best model %f %%') %
+                    test_losses_vec.append(test_score * 100)
+
+                    print(('\n\n[Epoch n°%i]\n'
+                           '   Number of minibatch analyzed: %i/%i\n'
+                           '   Error obtained from the test dataset: %f %%\n') %
                           (epoch, minibatch_index + 1, n_train_batches,
                            test_score * 100.))
 
-            if patience <= iter:
+            if patience <= iter or (epoch > 10):
                 done_looping = True
                 break
 
-    end_time = timeit.default_timer()
-    print(('Optimization complete. Best validation score of %f %% '
-           'obtained at iteration %i, with test performance %f %%') %
-          (best_validation_loss * 100., best_iter + 1, test_score * 100.))
-    print(('The code for file ' +
-           os.path.split(__file__)[1] +
-           ' ran for %.2fm' % ((end_time - start_time) / 60.)), file=sys.stderr)
+    plt.plot(test_losses_vec, 'bo-')
+    plt.title('Evolution of the error rate based on the test dataset during the network training')
+    plt.xlabel('Epoch')
+    plt.ylabel('Error rate (Percentage)')
+    plt.show()
 
+    end_time = timeit.default_timer()
+    print(('\nTraining complete.\n'
+           '    Succeeded with an error rate of : %f %% (based on test_dataset)') % (test_losses_vec[-1]))
+    print(('    Training took %.2fm' % ((end_time - start_time) / 60.)), file=sys.stderr)
+    print(('    Number of epochs : %i' % (epoch)))
+
+def printProgress(iteration, total, prefix='', suffix='', decimals=1, bar_length=100):
+    """
+    Call in a loop to create terminal progress bar
+    @params:
+        iteration   - Required  : current iteration (Int)
+        total       - Required  : total iterations (Int)
+        prefix      - Optional  : prefix string (Str)
+        suffix      - Optional  : suffix string (Str)
+        decimals    - Optional  : positive number of decimals in percent complete (Int)
+        bar_length  - Optional  : character length of bar (Int)
+    """
+    str_format = "{0:." + str(decimals) + "f}"
+    percents = str_format.format(100 * (iteration / float(total)))
+    filled_length = int(round(bar_length * iteration / float(total)))
+    bar = '█' * filled_length + '-' * (bar_length - filled_length)
+
+    sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percents, '%', suffix)),
+
+    if iteration == total:
+        sys.stdout.write('\n')
+    sys.stdout.flush()
 
 if __name__ == '__main__':
     test_mlp()
