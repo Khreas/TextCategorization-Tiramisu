@@ -1,0 +1,90 @@
+
+
+
+Le virus perturbateur dans l’art des nouveaux médias
+Dans l’histoire récente de l’art des nouveaux médias on peut distinguer une première catégorie importante représentée par les œuvres plastiques matérielles digitales. Elles ressemblent à première vue aux œuvres d’art traditionnelles mais appartiennent cependant à l’art virtuel (ou à ce que j’ai appelé art virtualisé) du fait de l’utilisation par les artistes de techniques numérisées.
+Les virus dans les œuvres plastiques matérielles digitales
+     Tout d’abord il faut savoir que le mot virus a deux connotations : la plus courante est négative et concerne les virus en tant que vecteurs de maladies. La seconde, moins connue, est positive et concerne les virus qui, en biologie, ont le rôle de précurseurs du vivant.
+     Dans ce qui suit et qui se rapporte au travail de l’artiste américain Joseph Nechvatal, j’emploie le mot virus dans ses deux sens puisque l’artiste s’en sert lui-même de cette façon au cours de deux phases distinctes de son travail. En effet, dans un premier temps, il procède, à l’aide d’un virus informatique, à la dégradation volontaire de son œuvre initiale de peintre - ce qui nous renvoie à la notion courante de virus vecteur de maladie. Dans un second temps, l’artiste remanipule et recompose l’œuvre en question, toujours à l’aide d’un virus informatique, lequel prend alors le rôle positif d’assistant à la création, soit l’équivalent de son rôle de précurseur du vivant en biologie.
+     On peut situer l’œuvre de Joseph Nechvatal dans la catégorie des œuvres d’art virtuel mentionnée plus haut. L’artiste travaille avec les images électroniques et la technologie informatique depuis 1986. Ses peintures assistées par ordinateur traduisent des images intimes du corps en unités picturales que les virus informatiques transforment. Ce travail intègre en les fusionnant, le dessin, la Peinture, l’écrit et le code informatique réifié en tant que tel. La contamination de la tradition de la peinture sur toile par les nouvelles technologies digitales crée ainsi une interface entre le virtuel et le réel, ce que Joseph Nechvatal appelle le viractuel. Après avoir composé manipulé ses images à partir d’un programme d’algorithmes
+iraux qui les modifie et les détériore de manière aléatoire, Nechvatal envoie ses fichiers par Internet à un robot qui exécute la peinture. L’artiste n’intervient pas directement dans l’acte de peindre, l’exécution se faisant par téléprésence. Fasciné par les machines à peindre, Joseph Nechvatal s’inscrit dans la lignée des inventeurs perturbateurs.
+     Ses travaux sont le fruit d’un programme de virus informatiques développé en 1991 et ensuite conjugué avec les principes de la vie artificielle, c’est-à-dire avec la création de systèmes de synthèse qui exhibent les caractéristiques comportementales des systèmes vivants. Des ferments de vie artificielle sont ainsi introduits sous la forme d’agents autonomes (les virus) qui « vivent » dans une image. L’œuvre se présente alors sous la forme d’une image projetée intégrant une population de virus actifs qui se développent et se reproduisent par analogie avec un système viral biologique.
+     De cette manière, le projet Computer Virus de Nechvatal est né de la volonté de produire des peintures à l’aide d’algorithmes mettant en jeu des processus « viraux ». Il repose sur un outil de simulation qui permet d’injecter virtuellement des organismes artificiels dans une peinture, de la transformer et de la dégrader. Certaines étapes de ces « attaques » peuvent ensuite faire l’objet d’une impression sur canevas, à l’aide de robots, pour revenir sur un support concret. Après ses premières peintures assistées par robot, Joseph Nechvatal a cherché à créer des peintures assistées par ordinateur autour du concept de virus. II a alors élaboré
+l’idée de considérer une image comme un hôte servant à accueillir des virus, des agents actifs dont le rôle consiste à manipuler et dégrader l’information contenue dans l’image.
+     La première version du projet Computer Virus fut rédigée en langage HyperCard Basic, et proposait un dessin de motifs géométriques sur une peinture préalablement choisie. Ainsi, dans une image « attaquée » par le virus, les motifs de couleur bleue résultent de l’algorithme viral. Toujours selon la logique qui consiste à procéder à des allers et retours entre le virtuel et le réel, le code de cette première version a été utilisé comme élément graphique pour la composition de tableaux.
+     A partir de sa deuxième version, débutée en 2001, le projet franchit une étape importante en devenant une véritable simulation de vie artificielle. Comme je l’ai déjà signalé, la vie artificielle est un domaine qui étudie des objets artificiels qui exhibent des propriétés du vivant, tandis que les virus sont modélisés comme des agents autonomes, en interaction continuelle avec leur environnement.
+     A la suite de cette version, il est devenu possible de réaliser des projections vidéos du processus en train de se calculer sur un ordinateur, donnant naissance à une véritable installation d’art numérique. A la différence d’une vidéo précédemment enregistrée, la projection est sans cesse renouvelée, chaque attaque présentée est unique. L’attaque d’une image consiste en premier lieu à construire un environnement à partir de l’image. Cet environnement est une grille de cases qui correspondent aux pixels de l’image, les couleurs étant représentées par des éléments pris dans l’environnement. Ensuite, une ou plusieurs populations de virus sont construites de façon aléatoire et injectées dans l’environnement. La simulation se poursuit jusqu’à ce qu’il ne reste plus de virus actif. Un nouveau cycle d’attaque peut commencer à partir d’une nouvelle image.
+     Depuis, le projet a connu des évolutions au fil des expositions. Lun des axes de développement majeur a consisté à renforcer le caractère immersif de l’installation, par enrichissement de l’expérience sensorielle du spectateur. L’aspect visuel, la forme des virus, leur taille, leur couleur, mais aussi la façon dont l’environnement est représenté, tous ces éléments ont fait l’objet de nombreuses variations : l’environnement peut être montré dans sa globalité, mais il est aussi possible de n’observer qu’une portion de l’image qui permet de voir davantage de détails, un peu comme si l’on se penchait sur un microscope. Un mode de poursuite automatique permet de choisir un virus parmi tous ceux présents dans l’image et de le poursuivre de façon à le garder toujours au centre de l’image.
+     A partir de la troisième version du projet, l’ajout du son a permis de franchir un cap important en renforçant le caractère immersif de l’installation. Pour correspondre au mieux à l’image, le son est synthétisé en temps réel à partir de l’activité des virus. L’algorithme utilisé est une forme de synthèse granulaire appliquée à des fichiers audio, dans laquelle les paramètres sont modulés selon des données statistiques issues de la simulation : reproduction, consommation de ressources, mort. Ces statistiques sont calculées pour différentes régions de l’image, ce qui permet de spatialiser le son. Par exemple, si des virus sont Plus actifs d’un côté de l’écran, le son sera plus fort de ce côté. Le dispositif sonore Permet ainsi d’attirer l’œil du spectateur vers des régions de l’image où se déroulent es événements importants.
+     Enfin, certaines installations et vidéos sont accompagnées d’une bande son. La superposition du son produit des rythmes et des harmonies qui s’accordent Particulièrement bien avec les mouvements des virus, comme si chaque virus était associé à un instrument de musique.
+Durant l’année 2004, dans une série d’expositions réunies sous le titre Viral CounterAttack, l’installation était présentée pour la première fois dans sa
+u
+
+version interactive. Les spectateurs étaient conviés à influer en temps réel sur la trajectoire des virus par le mouvement de leurs mains au-dessus d’une surface sensitive.
+Les virus dans le Net art
+     Une seconde catégorie d’œuvres d’art virtuel est représentée par les œuvres multimédia on-line, qualifiées de Net art, où le participant est confronté à l’univers de la communication artistique via Internet. Le thème du réseau y figure en tant que lieu de prise de position individuelle et de communication sociale, de même que l’état de l’engagement de l’artiste en faveur de la télématique et de la télé-robotique humaine. En fait, la première préoccupation des artistes de cette catégorie est la communication. A ce propos, il faut tenir compte de tous les bouleversements apportés par l’Internet qui est devenu un moyen de large communication sociale dès le début des années 1990.
+     Au-delà des virus de transformation algorithmiques employés par les artistes créant des œuvres matérielles digitales (comme celles de Joseph Nechvatal), je m’intéresserai également à la démarche des artistes du Net art qui revendiquent des implications parasitaires et qui proposent des voies alternatives à des options strictement fonctionnelles telles que les pointeurs-cliqueurs comme conventions de navigation, ou encore la réception figée de l’information sans possibilité d’intervention ou de transformation. La forme liminaire d’action créative de ces artistes vise à infecter ou à contaminer l’Internet par le moyen de virus
+
+
+artistiques qui empruntent à la logique et aux comportements déviants des pirates de l’informatique : les hackers. Leur démarche a pour objectif l’incident, le bug, l’inconfort technologique et la perte des repères. Les œuvres pionnières du groupe hollandais JODI interviennent, par exemple, sur la structure du langage Html par altération du code et par la transformation des balises qui permettent l’agencement des sites Web, tant au niveau de la mise en page que de l’intégration des composantes multimédias,du son,de l’image et de la vidéo. En faisant intrusion à la racine même des sites, au niveau du langage et du code informatique sous-jacent, ces œuvres suscitent des erreurs élémentaires et des commandes contradictoires : l’erreur système 404 qu’elles affichent fait ici figure de leitmotiv créatif. JODI entraîne ainsi le public dans les dédales rhizomatiques d’un jeu de piste dont il est souvent impossible de trouver l’issue. Les interfaces de brouillage confrontent le visiteur à l’apparition constante de messages d’alerte, elles provoquent une perte de contrôle de l’ordinateur qui ne répond plus finalement à aucune commande.
+     Parmi les artistes du Net art se servant de perturbations créatrices, je citerai encore Mark Napier et Maciej Winiewski et leurs œuvres le Shredder et le Netomat qui sont centrées sur les coulisses du réseau lui-même. Ces œuvres s’approprient les données du Web en altérant le code Html avant même qu’il soit interprété par les logiciels de navigation. Il s’agit donc d’anti-moteurs de recherche qui redonnent à l’Internet son potentiel d’archive dynamique et modulable. Le Netomat de Winiewski répond par exemple aux requêtes des internautes par un afflux de textes,de sons et d’images fixes ou animées récupérées sur le Web. Il revient alors à l’utilisateur de combiner ou recombiner ces différentes informations, en partant de l’arborescence du site et de la structure de la page d’où elles sont extraites. Cette œuvre se situe à la frontière entre le navigateur, le moteur de recherche et l’extracteur. Son programme - le Neomatic Markup Language - développé en open- source.est lui-même modulaire et adaptable : il peut être approprié et amélioré par ses utilisateurs, ou encore servir de plate-forme pour d’autres applications.
+     Toujours provenant du Net art, je citerai le Trace Noiser du groupe LAN, mêlant des artistes et des professionnels du design, qui défend d’une manière différente un mode de production artistique fondé sur le développement en open-source d’applications et d’outils informatiques détournés de leurs usages premiers. Ce générateur de clones informationnels croise les fonctionnalités du moteur de recherche et des outils statistiques d’indexation et de traçage des réseaux de liens sur le Net. Le principe de l’œuvre est d’engendrer de fausses « pages perso » et de les disséminer sur le réseau pour brouiller l’identité des participants. L’internaute est invité à saisir son identifiant (nom et prénom) dans le Trace Noiser, à partir duquel est créée automatiquement sa propre page Web, une sorte de portrait intime engendré à partir du glanage et du réagencement alternatif des sources le concernant sur le réseau. Ce projet artistique exploite le luit que toute personne qui utilise activement l’Internet laisse, parfois malgré elle, une quantité de traces numériques (liées, par exemple, à l’indexation d’un nom dans les courriels, des formulaires de commande, des signatures électroniques, des déclarations d’usage de logiciels). L’application créative qui est faite de ces traces a Pour effet de brouiller les pistes, elle mêle le vrai et le faux et rend de ce fait difficile
+
+
+
+
+
+
+
+
+
+	
+l’utilisation des informations.Toutes ces œuvres du Net art révèlent les implications sociales des technologies de repérage et d’accès à l’information sur Internet. Certains de ces dispositifs de distorsion des contenus et des outils de l’Internet ont une visée plus politique, financière et économique. Ainsi certains artistes proposent des jeux vidéos ayant pour mission la guerre contre le terrorisme, d’autres la perversion des communications médiatiques de grandes puissances financières, et d’autres encore parodient la logique économique des sociétés d’audit en les transportant dans la sphère artistique et culturelle de l’Internet.
+     De manière générale, on peut constater que les démarches des artistes utilisant des virus en tant que stimulateurs créatifs s’inscrivent d’une manière assez originale dans les quatre faces du carré de l’esthétique : l’auteur (l’artiste), l’œuvre, le spectateur et le théoricien (critique, historien ,sociologue, philosophe, psychologue).
+     En fait, le rôle de l’artiste utilisant des virus dans l’art des nouveaux médias et en particulier le rôle des artistes des réseaux revendiquant un type d’implication parasitaire,,leur permet de s’insérer dans un processus artistique comparable à celui de la biologie en évolution ou bien à celui qui vise à infecter ou à contaminer l’Internet par des virus artistiques. De cette manière, l’artiste du Net art parvient, entre autres, à se servir de la logique et des comportements déviants des pirates de l’Informatique, les hackers. Certains créateurs du Net art ont même imaginé des navigateurs et des moteurs de recherche subversifs. La tendance actuelle du Net art est d’aller vers une créativité en réseau.
+     Dans l’univers des médias, un engagement se lit aujourd’hui à travers l’essor de la multiplication des dispositifs d’auto-production ou de production de soi que constituent les sites personnels, les blogs et leurs technologies appareillées, ainsi que les réseaux d’échanges entre pairs et leurs pratiques associées.
+     C’est la notion de dispositif en lieu et place de l’œuvre qui caractérise l’évolution de l’art des nouveaux médias par rapport aux autres formes d’art en vue de la création d’un objet ou d’une situation artistique. Pour le monde des arts, l’Internet constitue, simultanément et, dès son apparition, le support technique, l’outil créatif et le dispositif social d’une nouvelle variété d’œuvres. En s’inscrivant dans cette articulation, les œuvres du Net art se manifestent dans la conception de dispositifs interactifs spécifiques mais aussi dans la production de formes de vie en ligne, et de stratégies de communication en réseau.
+     La notion du spectateur interactif s’inscrit dans une tradition récente qui va de la simple participation à celle d’un actant dans un réseau numérique, en passant précisément par celles de l’interactivité et de l’interaction. Il existe de nombreux exemples de la participation et de l’interactivité avec le public dans l’art des nouveaux médias. Un exemple concerne une posture de réflexivité interactive et une responsabilité de l’actant face à des actes de sa participation. Pour certains artistes du Net Art, la stratégie et la condition de leurs projets créatifs reposent sur l’acceptation par le public d’une mythographie artistique et d’une identité fabriquée pour qu’il se prête au jeu et libère ses émotions en ajoutant ses propres fantasmes à la construction de l’œuvre. A la croisée de l’œuvre communicationnelle et de la performance, le dispositif instaure une sorte de rituel de lecture disséminée dans le temps et dans les arcanes des réseaux dont l’initiation appelle des degrés variés de
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
