@@ -42,8 +42,6 @@ import gzip
 import os
 import sys
 import timeit
-import csv
-import copy
 import random
 
 import numpy
@@ -51,9 +49,7 @@ import numpy
 import theano
 import theano.tensor as T
 
-
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
 
 class LogisticRegression(object):
     """Multi-class Logistic Regression Class
@@ -178,207 +174,6 @@ class LogisticRegression(object):
             raise NotImplementedError()
 
 
-def load_data(slidingWindow = False, slidingWindowSize = 4):
-    ''' Loads the dataset
-
-    :type dataset: string
-    :param dataset: the path to the dataset (here MNIST)
-    '''
-
-    print('[DATA LOADING]')
-
-    # Load and separate the dataset in 3 different vectors : test_set, train_set and valid_set
-
-    directory = "Text"
-
-    train_set = []
-    test_set = []
-    validation_set = []
-    test_files = []
-    validation_files = []
-
-    print("\n    [Authors]")
-
-    for subdir in next(os.walk(directory))[1]:
-        if len(os.listdir(os.path.join(directory, subdir))) < 3:
-            print("       [Warning]             Can't load author %s : not enough files available" %(subdir))
-        else:
-            test_file = random.choice(os.listdir(os.path.join(directory, subdir)))
-            validation_file = random.choice(os.listdir(os.path.join(directory, subdir)))
-            while test_file == validation_file:
-                validation_file = random.choice(os.listdir(os.path.join(directory, subdir)))
-            test_files.append(test_file)
-            validation_files.append(validation_file)
-
-    print("       [Number of authors]   %d" %get_author_number())
-
-    count_author = -1
-    letter_vector = [0] * len(alphabet)
-
-    print("\n    [Texts]")
-
-    if not slidingWindow:
-
-        print("       [Input Type]          Vectors of letters")
-
-        for subdir in next(os.walk(directory))[1]:
-            if os.listdir(os.path.join(directory, subdir)):
-                count_author = count_author + 1
-            for file in os.listdir(os.path.join(directory, subdir)):
-                if file.endswith(".txt"):
-                    if file not in test_files and file not in validation_files:
-                        with open(os.path.join(directory, subdir, file), "r") as text:
-                            target = count_author
-                            for line in text:
-                                for word in line:
-                                    for character in word:
-                                        if character in alphabet:
-                                            letter_vector = [0] * len(alphabet)
-                                            letter_vector[alphabet.index(character)] = 1
-                                            tuple_tmp = (letter_vector, target)
-                                            train_set.append(tuple_tmp)
-                    elif file in test_files:
-                        with open(os.path.join(directory, subdir, file), "r") as text:
-                            target = count_author
-                            for line in text:
-                                for word in line:
-                                    for character in word:
-                                        if character in alphabet:
-                                            letter_vector = [0] * len(alphabet)
-                                            letter_vector[alphabet.index(character)] = 1
-                                            tuple_tmp = (letter_vector, target)
-                                            test_set.append(tuple_tmp)
-                    elif file in validation_files:
-                        with open(os.path.join(directory, subdir, file), "r") as text:
-                            target = count_author
-                            for line in text:
-                                for word in line:
-                                    for character in word:
-                                        if character in alphabet:
-                                            letter_vector = [0] * len(alphabet)
-                                            letter_vector[alphabet.index(character)] = 1
-                                            tuple_tmp = (letter_vector, target)
-                                            validation_set.append(tuple_tmp)
-
-    else:
-
-        print("       [Input Type]          Vectors of letters, based on sliding window")
-
-        memory = []
-        letter_nb = 0
-
-        print("       [Input type]          Size of the window: %d" %slidingWindowSize)
-        print("       [Input type]          Step: 1")
-
-        for subdir in next(os.walk(directory))[1]:
-            if os.listdir(os.path.join(directory, subdir)):
-                count_author = count_author + 1
-            for file in os.listdir(os.path.join(directory, subdir)):
-                if file.endswith(".txt"):
-                    if file not in test_files and file not in validation_files:
-                        with open(os.path.join(directory, subdir, file), "r") as text:
-                            target = count_author
-                            for line in text:
-                                for word in line:
-                                    for character in word:
-                                        if character in alphabet:
-                                            if len(memory) < slidingWindowSize:
-                                                memory.append(character)
-                                            else:
-                                                for read_char in memory:
-                                                    letter_vector[alphabet.index(read_char)] = 1
-                                                tuple_tmp = (letter_vector, target)
-                                                train_set.append(tuple_tmp)
-                                                letter_vector = [0] * len(alphabet)
-                                                memory = memory[1:]
-                                                memory.append(character)                         
-                                            
-                    elif file in test_files:
-                        with open(os.path.join(directory, subdir, file), "r") as text:
-                            target = count_author
-                            for line in text:
-                                for word in line:
-                                    for character in word:
-                                        if character in alphabet:
-                                            if len(memory) < slidingWindowSize:
-                                                memory.append(character)
-                                            else:
-                                                for read_char in memory:
-                                                    letter_vector[alphabet.index(read_char)] = 1
-                                                tuple_tmp = (letter_vector, target)
-                                                test_set.append(tuple_tmp)
-                                                letter_vector = [0] * len(alphabet)
-                                                memory = memory[1:]
-                                                memory.append(character)
-                    
-                    elif file in validation_files:
-                        with open(os.path.join(directory, subdir, file), "r") as text:
-                            target = count_author
-                            for line in text:
-                                for word in line:
-                                    for character in word:
-                                        if character in alphabet:
-                                            if len(memory) < slidingWindowSize:
-                                                memory.append(character)
-                                            else:
-                                                for read_char in memory:
-                                                    letter_vector[alphabet.index(read_char)] = 1
-                                                tuple_tmp = (letter_vector, target)
-                                                validation_set.append(tuple_tmp)
-                                                letter_vector = [0] * len(alphabet)
-                                                memory = memory[1:]
-                                                memory.append(character)
-    random.shuffle(train_set)
-    random.shuffle(test_set)
-    random.shuffle(validation_set)
-
-    # train_set, valid_set, test_set format: tuple(input, target)
-    # input is a numpy.ndarray of 2 dimensions (a matrix)
-    # where each row corresponds to an example. target is a
-    # numpy.ndarray of 1 dimension (vector) that has the same length as
-    # the number of rows in the input. It should give the target
-    # to the example with the same index in the input.
-
-    def shared_dataset(data_xy, borrow=True):
-        """ Function that loads the dataset into shared variables
-
-        The reason we store our dataset in shared variables is to allow
-        Theano to copy it into the GPU memory (when code is run on GPU).
-        Since copying data into the GPU is slow, copying a minibatch everytime
-        is needed (the default behaviour if the data is not in a shared
-        variable) would lead to a large decrease in performance.
-        """
-
-        """
-        Here, data_x, data_y = data_xy didn't work ; too many values to unpack.
-        """
-
-        data_x = [element[0] for element in data_xy]
-        data_y = [element[1] for element in data_xy]
-        shared_x = theano.shared(numpy.asarray(data_x,
-                                               dtype=theano.config.floatX),
-                                 borrow=borrow)
-        shared_y = theano.shared(numpy.asarray(data_y,
-                                               dtype=theano.config.floatX),
-                                 borrow=borrow)
-        # When storing data on the GPU it has to be stored as floats
-        # therefore we will store the labels as ``floatX`` as well
-        # (``shared_y`` does exactly that). But during our computations
-        # we need them as ints (we use labels as index, and if they are
-        # floats it doesn't make sense) therefore instead of returning
-        # ``shared_y`` we will have to cast it to int. This little hack
-        # lets ous get around this issue
-        return shared_x, T.cast(shared_y, 'int32')
-
-    train_set_x, train_set_y = shared_dataset(train_set)
-    test_set_x, test_set_y = shared_dataset(test_set)
-    validation_set_x, validation_set_y = shared_dataset(validation_set)
-
-    rval = [(train_set_x, train_set_y),
-            (test_set_x, test_set_y),
-            (validation_set_x, validation_set_y)]
-    return rval
-
 # def load_data(dataset):
 #     ''' Loads the dataset
 
@@ -396,7 +191,7 @@ def load_data(slidingWindow = False, slidingWindowSize = 4):
 #         # Check if dataset is in the data directory.
 #         new_path = os.path.join(
 #             os.path.split(__file__)[0],
-#             ".",
+#             "..",
 #             "data",
 #             dataset
 #         )
@@ -419,6 +214,9 @@ def load_data(slidingWindow = False, slidingWindowSize = 4):
 #             train_set, valid_set, test_set = pickle.load(f, encoding='latin1')
 #         except:
 #             train_set, valid_set, test_set = pickle.load(f)
+
+#     print(valid_set)
+
 #     # train_set, valid_set, test_set format: tuple(input, target)
 #     # input is a numpy.ndarray of 2 dimensions (a matrix)
 #     # where each row corresponds to an example. target is a
@@ -455,17 +253,456 @@ def load_data(slidingWindow = False, slidingWindowSize = 4):
 #     valid_set_x, valid_set_y = shared_dataset(valid_set)
 #     train_set_x, train_set_y = shared_dataset(train_set)
 
+#     print(test_set_x)
+#     print(test_set_y)
+
 #     rval = [(train_set_x, train_set_y), (valid_set_x, valid_set_y),
 #             (test_set_x, test_set_y)]
 #     return rval
 
-def get_author_number():
+def load_data(slidingWindow = False, slidingWindowSize = 2):
+    ''' Loads the dataset
+
+    :type dataset: string
+    :param dataset: the path to the dataset (here MNIST)
+    '''
+
+    print('\n[DATA LOADING]')
+
+    # Load and separate the dataset in 3 different vectors : test_set, train_set and valid_set
+
+    slidingWindow = False
+
     directory = "Text"
-    count = 0
+
+    train_set = []
+    test_set = []
+    validation_set = []
+    test_files = []
+    validation_files = []
+
+    print("\n    [Authors]")
+
     for subdir in next(os.walk(directory))[1]:
-        if len(os.listdir(os.path.join(directory, subdir))) > 3:
-            count = count+1
-    return count
+        if len(os.listdir(os.path.join(directory, subdir))) < 3:
+            print("       [Warning]             Can't load author %s : not enough files available" %(subdir))
+        else:
+            test_file = random.choice(os.listdir(os.path.join(directory, subdir)))
+            validation_file = random.choice(os.listdir(os.path.join(directory, subdir)))
+            while test_file == validation_file:
+                validation_file = random.choice(os.listdir(os.path.join(directory, subdir)))
+            test_files.append(test_file)
+            validation_files.append(validation_file)
+
+    print("       [Number of authors]   3")
+
+    count_author = -1
+    letter_vector = [0] * len(alphabet)
+    target_vector = []
+    example_vector_train = []
+    example_vector_valid = []
+    example_vector_test = []
+
+    target_vector_train = []
+    target_vector_valid = []
+    target_vector_test = []
+
+    print("\n    [Texts]")
+
+    if not slidingWindow:
+
+        print("       [Input Type]          Vectors of letters")
+
+        for subdir in next(os.walk(directory))[1]:
+            if os.listdir(os.path.join(directory, subdir)):
+                count_author = count_author + 1
+            for file in os.listdir(os.path.join(directory, subdir)):
+                if file.endswith(".txt"):
+                    if file not in test_files and file not in validation_files:
+                        with open(os.path.join(directory, subdir, file), "r") as text:
+                            target = count_author
+                            for line in text:
+                                for word in line:
+                                    for character in word:
+                                        if character in alphabet:
+                                            letter_vector = [0] * len(alphabet)
+                                            letter_vector[alphabet.index(character)] = 1
+                                            example_vector_train.append(letter_vector)
+                                            target_vector_train.append(target)
+
+                    elif file in test_files:
+                        with open(os.path.join(directory, subdir, file), "r") as text:
+                            target = count_author
+                            for line in text:
+                                for word in line:
+                                    for character in word:
+                                        if character in alphabet:
+                                            letter_vector = [0] * len(alphabet)
+                                            letter_vector[alphabet.index(character)] = 1
+                                            example_vector_test.append(letter_vector)
+                                            target_vector_test.append(target)
+
+                    elif file in validation_files:
+                        with open(os.path.join(directory, subdir, file), "r") as text:
+                            target = count_author
+                            for line in text:
+                                for word in line:
+                                    for character in word:
+                                        if character in alphabet:
+                                            letter_vector = [0] * len(alphabet)
+                                            letter_vector[alphabet.index(character)] = 1
+                                            example_vector_valid.append(letter_vector)
+                                            target_vector_valid.append(target)
+
+    else:
+
+        print("       [Input Type]          Vectors of letters, based on sliding window")
+
+        memory = []
+        letter_nb = 0
+
+        print("       [Input type]          Size of the window: %d" %slidingWindowSize)
+        print("       [Input type]          Step: 1")
+
+        for subdir in next(os.walk(directory))[1]:
+            if os.listdir(os.path.join(directory, subdir)):
+                count_author = count_author + 1
+            for file in os.listdir(os.path.join(directory, subdir)):
+                if file.endswith(".txt"):
+                    if file not in test_files and file not in validation_files:
+                        with open(os.path.join(directory, subdir, file), "r") as text:
+                            target = count_author
+                            for line in text:
+                                for word in line:
+                                    for character in word:
+                                        if character in alphabet:
+                                            letter_vector = [0] * len(alphabet)
+                                            letter_vector[alphabet.index(character)] = 1
+                                            target_vector.append(target)
+                                            memory.append(letter_vector)
+                                            if len(memory) == slidingWindowSize:
+                                                tuple_tmp = (memory, target_vector)
+                                                train_set.append(tuple_tmp)
+                                                memory = memory[1:]
+                                                target_vector = target_vector[1:]                     
+                                            
+                    elif file in test_files:
+                        with open(os.path.join(directory, subdir, file), "r") as text:
+                            target = count_author
+                            for line in text:
+                                for word in line:
+                                    for character in word:
+                                        if character in alphabet:
+                                            letter_vector = [0] * len(alphabet)
+                                            letter_vector[alphabet.index(character)] = 1
+                                            target_vector.append(target)
+                                            memory.append(letter_vector)
+                                            if len(memory) == slidingWindowSize:
+                                                tuple_tmp = (memory, target_vector)
+                                                test_set.append(tuple_tmp)
+                                                memory = memory[1:]
+                                                target_vector = target_vector[1:]
+                    
+                    elif file in validation_files:
+                        with open(os.path.join(directory, subdir, file), "r") as text:
+                            target = count_author
+                            for line in text:
+                                for word in line:
+                                    for character in word:
+                                        if character in alphabet:
+                                            letter_vector = [0] * len(alphabet)
+                                            letter_vector[alphabet.index(character)] = 1
+                                            target_vector.append(target)
+                                            memory.append(letter_vector)
+                                            if len(memory) == slidingWindowSize:
+                                                tuple_tmp = (memory, target_vector)
+                                                validation_set.append(tuple_tmp)
+                                                memory = memory[1:]
+                                                target_vector = target_vector[1:]
+
+    # random.shuffle(train_set)
+    # random.shuffle(test_set)
+    # random.shuffle(validation_set)
+
+    # print(example_validation_test)
+    # print(target_vector_test)    
+
+    train_set = (numpy.array(example_vector_train), numpy.array(target_vector_train))
+    validation_set = (numpy.array(example_vector_valid), numpy.array(target_vector_valid))
+    test_set = (numpy.array(example_vector_test), numpy.array(target_vector_test))
+
+    # print(train_set)
+    # print(test_set)
+    # print(validation_set)
+
+    # train_set, valid_set, test_set format: tuple(input, target)
+    # input is a numpy.ndarray of 2 dimensions (a matrix)
+    # where each row corresponds to an example. target is a
+    # numpy.ndarray of 1 dimension (vector) that has the same length as
+    # the number of rows in the input. It should give the target
+    # to the example with the same index in the input.
+
+    def shared_dataset(data_xy, borrow=True):
+        """ Function that loads the dataset into shared variables
+
+        The reason we store our dataset in shared variables is to allow
+        Theano to copy it into the GPU memory (when code is run on GPU).
+        Since copying data into the GPU is slow, copying a minibatch everytime
+        is needed (the default behaviour if the data is not in a shared
+        variable) would lead to a large decrease in performance.
+        """
+
+        """
+        Here, data_x, data_y = data_xy didn't work ; too many values to unpack.
+        """
+
+        data_x, data_y = data_xy
+        shared_x = theano.shared(numpy.asarray(data_x,
+                                               dtype=theano.config.floatX),
+                                 borrow=borrow)
+        shared_y = theano.shared(numpy.asarray(data_y,
+                                               dtype=theano.config.floatX),
+                                 borrow=borrow)
+        # When storing data on the GPU it has to be stored as floats
+        # therefore we will store the labels as ``floatX`` as well
+        # (``shared_y`` does exactly that). But during our computations
+        # we need them as ints (we use labels as index, and if they are
+        # floats it doesn't make sense) therefore instead of returning
+        # ``shared_y`` we will have to cast it to int. This little hack
+        # lets ous get around this issue
+        return shared_x, T.cast(shared_y, 'int32')
+
+    train_set_x, train_set_y = shared_dataset(train_set)
+    test_set_x, test_set_y = shared_dataset(test_set)
+    validation_set_x, validation_set_y = shared_dataset(validation_set)
+
+    # print(test_set_x)
+    # print(test_set_y)
+
+    rval = [(train_set_x, train_set_y),
+            (test_set_x, test_set_y),
+            (validation_set_x, validation_set_y)]
+    return rval
+
+
+def sgd_optimization_mnist(learning_rate=0.13, n_epochs=1000,
+                           dataset='mnist.pkl.gz',
+                           batch_size=600):
+    """
+    Demonstrate stochastic gradient descent optimization of a log-linear
+    model
+
+    This is demonstrated on MNIST.
+
+    :type learning_rate: float
+    :param learning_rate: learning rate used (factor for the stochastic
+                          gradient)
+
+    :type n_epochs: int
+    :param n_epochs: maximal number of epochs to run the optimizer
+
+    :type dataset: string
+    :param dataset: the path of the MNIST dataset file from
+                 http://www.iro.umontreal.ca/~lisa/deep/data/mnist/mnist.pkl.gz
+
+    """
+    datasets = load_data(dataset)
+
+    train_set_x, train_set_y = datasets[0]
+    valid_set_x, valid_set_y = datasets[1]
+    test_set_x, test_set_y = datasets[2]
+
+    # compute number of minibatches for training, validation and testing
+    n_train_batches = train_set_x.get_value(borrow=True).shape[0] // batch_size
+    n_valid_batches = valid_set_x.get_value(borrow=True).shape[0] // batch_size
+    n_test_batches = test_set_x.get_value(borrow=True).shape[0] // batch_size
+
+    ######################
+    # BUILD ACTUAL MODEL #
+    ######################
+    print('... building the model')
+
+    # allocate symbolic variables for the data
+    index = T.lscalar()  # index to a [mini]batch
+
+    # generate symbolic variables for input (x and y represent a
+    # minibatch)
+    x = T.matrix('x')  # data, presented as rasterized images
+    y = T.ivector('y')  # labels, presented as 1D vector of [int] labels
+
+    # construct the logistic regression class
+    # Each MNIST image has size 28*28
+    classifier = LogisticRegression(input=x, n_in=28 * 28, n_out=10)
+
+    # the cost we minimize during training is the negative log likelihood of
+    # the model in symbolic format
+    cost = classifier.negative_log_likelihood(y)
+
+    # compiling a Theano function that computes the mistakes that are made by
+    # the model on a minibatch
+    test_model = theano.function(
+        inputs=[index],
+        outputs=classifier.errors(y),
+        givens={
+            x: test_set_x[index * batch_size: (index + 1) * batch_size],
+            y: test_set_y[index * batch_size: (index + 1) * batch_size]
+        }
+    )
+
+    validate_model = theano.function(
+        inputs=[index],
+        outputs=classifier.errors(y),
+        givens={
+            x: valid_set_x[index * batch_size: (index + 1) * batch_size],
+            y: valid_set_y[index * batch_size: (index + 1) * batch_size]
+        }
+    )
+
+    # compute the gradient of cost with respect to theta = (W,b)
+    g_W = T.grad(cost=cost, wrt=classifier.W)
+    g_b = T.grad(cost=cost, wrt=classifier.b)
+
+    # start-snippet-3
+    # specify how to update the parameters of the model as a list of
+    # (variable, update expression) pairs.
+    updates = [(classifier.W, classifier.W - learning_rate * g_W),
+               (classifier.b, classifier.b - learning_rate * g_b)]
+
+    # compiling a Theano function `train_model` that returns the cost, but in
+    # the same time updates the parameter of the model based on the rules
+    # defined in `updates`
+    train_model = theano.function(
+        inputs=[index],
+        outputs=cost,
+        updates=updates,
+        givens={
+            x: train_set_x[index * batch_size: (index + 1) * batch_size],
+            y: train_set_y[index * batch_size: (index + 1) * batch_size]
+        }
+    )
+    # end-snippet-3
+
+    ###############
+    # TRAIN MODEL #
+    ###############
+    print('... training the model')
+    # early-stopping parameters
+    patience = 5000  # look as this many examples regardless
+    patience_increase = 2  # wait this much longer when a new best is
+                                  # found
+    improvement_threshold = 0.995  # a relative improvement of this much is
+                                  # considered significant
+    validation_frequency = min(n_train_batches, patience // 2)
+                                  # go through this many
+                                  # minibatche before checking the network
+                                  # on the validation set; in this case we
+                                  # check every epoch
+
+    best_validation_loss = numpy.inf
+    test_score = 0.
+    start_time = timeit.default_timer()
+
+    done_looping = False
+    epoch = 0
+    while (epoch < n_epochs) and (not done_looping):
+        epoch = epoch + 1
+        for minibatch_index in range(n_train_batches):
+     
+            printProgress(minibatch_index, n_train_batches, prefix='Minibatch progress -> ')
+
+            minibatch_avg_cost = train_model(minibatch_index)
+            # iteration number
+            iter = (epoch - 1) * n_train_batches + minibatch_index
+
+            if (iter + 1) % validation_frequency == 0:
+                # compute zero-one loss on validation set
+                validation_losses = [validate_model(i)
+                                     for i in range(n_valid_batches)]
+                this_validation_loss = numpy.mean(validation_losses)
+
+                print(
+                    'epoch %i, minibatch %i/%i, validation error %f %%' %
+                    (
+                        epoch,
+                        minibatch_index + 1,
+                        n_train_batches,
+                        this_validation_loss * 100.
+                    )
+                )
+
+                # if we got the best validation score until now
+                if this_validation_loss < best_validation_loss:
+                    #improve patience if loss improvement is good enough
+                    if this_validation_loss < best_validation_loss *  \
+                       improvement_threshold:
+                        patience = max(patience, iter * patience_increase)
+
+                    best_validation_loss = this_validation_loss
+                    # test it on the test set
+
+                    test_losses = [test_model(i)
+                                   for i in range(n_test_batches)]
+                    test_score = numpy.mean(test_losses)
+
+                    print(
+                        (
+                            '     epoch %i, minibatch %i/%i, test error of'
+                            ' best model %f %%'
+                        ) %
+                        (
+                            epoch,
+                            minibatch_index + 1,
+                            n_train_batches,
+                            test_score * 100.
+                        )
+                    )
+
+                    # save the best model
+                    with open('best_model.pkl', 'wb') as f:
+                        pickle.dump(classifier, f)
+
+            if patience <= iter:
+                done_looping = True
+                break
+
+    end_time = timeit.default_timer()
+    print(
+        (
+            'Optimization complete with best validation score of %f %%,'
+            'with test performance %f %%'
+        )
+        % (best_validation_loss * 100., test_score * 100.)
+    )
+    print('The code run for %d epochs, with %f epochs/sec' % (
+        epoch, 1. * epoch / (end_time - start_time)))
+    print(('The code for file ' +
+           os.path.split(__file__)[1] +
+           ' ran for %.1fs' % ((end_time - start_time))), file=sys.stderr)
+
+
+def predict():
+    """
+    An example of how to load a trained model and use it
+    to predict labels.
+    """
+
+    # load the saved model
+    classifier = pickle.load(open('best_model.pkl'))
+
+    # compile a predictor function
+    predict_model = theano.function(
+        inputs=[classifier.input],
+        outputs=classifier.y_pred)
+
+    # We can test it on some examples from test test
+    dataset='mnist.pkl.gz'
+    datasets = load_data(dataset)
+    test_set_x, test_set_y = datasets[2]
+    test_set_x = test_set_x.get_value()
+
+    predicted_values = predict_model(test_set_x[:10])
+    print("Predicted values for the first 10 examples in test set:")
+    print(predicted_values)
 
 
 if __name__ == '__main__':
